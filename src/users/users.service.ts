@@ -11,23 +11,23 @@ export class UsersService {
     @InjectModel(User.name) private usersModel: Model<UserDocument>,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  create(createUser: CreateUserDto) {
+    return this.usersModel.create(createUser);
   }
 
-  findAll() {
-    return `This action returns all users`;
+  findAll(limit = 10) {
+    return this.usersModel.find().limit(limit);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findOne(id: string) {
+    return this.usersModel.find({ _id: id });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  update(id: string, updateUserDto: UpdateUserDto) {
+    return this.usersModel.updateOne({ _id: id }, { $set: updateUserDto });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  remove(id: string) {
+    return this.usersModel.deleteOne({ _id: id });
   }
 }
