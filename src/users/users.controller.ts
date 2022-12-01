@@ -13,20 +13,25 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('api/users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private configService: ConfigService,
+  ) {}
 
   @Post()
   create(@Body() createUser: CreateUserDto) {
-    if (!createUser.first_name || !createUser.email || !createUser.password)
+    if (!createUser.email || !createUser.password)
       throw new HttpException('Campos incompletos', HttpStatus.BAD_REQUEST);
     return this.usersService.create(createUser);
   }
 
   @Get()
   async findAll(@Query('limit') limit) {
+    console.log(this.configService.get<string>('user_variable'));
     const users = await this.usersService.findAll(+limit);
     return { status: 'success', users };
   }

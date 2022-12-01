@@ -11,8 +11,9 @@ export class UsersService {
     @InjectModel(User.name) private usersModel: Model<UserDocument>,
   ) {}
 
-  create(createUser: CreateUserDto) {
-    return this.usersModel.create(createUser);
+  async create(createUser: CreateUserDto) {
+    const userCreated = await this.usersModel.create(createUser);
+    return userCreated;
   }
 
   findAll(limit = 10) {
